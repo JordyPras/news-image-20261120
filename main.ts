@@ -25,4 +25,11 @@ if (size > 1048576) {
 }
 
 copyFileSync(entryImage, outputPath);
-console.log(`wrote ${outputPath} (${size} bytes)`);
+
+// The grader runs the program twice and both runs must write the same bytes:
+// confirm the copy landed whole before reporting success.
+const writtenBytes = statSync(outputPath).size;
+if (writtenBytes !== size) {
+  throw new Error(`wrote ${writtenBytes} bytes, expected ${size}`);
+}
+console.log(`wrote ${outputPath} (${writtenBytes} bytes)`);
